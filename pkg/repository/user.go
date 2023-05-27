@@ -18,6 +18,12 @@ func NewUserRepository(db *gorm.DB) interfaces.UserRepository {
 	}
 }
 
+func (c *userDatabase) FindUserById(ctx context.Context, userId uint32) (user domain.User, err error) {
+	query := `SELECT * FROM users WHERE id = $1`
+	err = c.db.Raw(query, userId).Scan(&user).Error
+	return
+}
+
 func (c *userDatabase) FindUserByEmail(ctx context.Context, email string) (user domain.User, err error) {
 	query := `SELECT * FROM users WHERE email = $1`
 	err = c.db.Raw(query, email).Scan(&user).Error
