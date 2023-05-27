@@ -3,24 +3,15 @@ syntax = "proto3";
 package pb;
 option go_package = "./pkg/pb";
 
+import "pkg/pb/response.proto";
 
 service UserService {
- rpc FindUserByEmail(FindUserByEmailRequest) returns (FindUserResponse){}
- rpc SaveUser(SaveUserRequest) returns (SaveUserResponse){}
+    rpc FindUserByEmail(FindUserByEmailRequest) returns (FindUserResponse){}
+    rpc SaveUser(SaveUserRequest) returns (SaveUserResponse){}
+    rpc GetUserProfile(GetUserProfileRequest) returns (GetUserProfileResponse){}
 }
+   
 
-message Response{
-    uint32 status_code = 1;
-    string message = 2;
-    string error  = 3;
-}
-message User {
-    uint32 user_id = 1;
-    string first_name = 2;
-    string last_name = 3;
-    string email  = 4;
-    string password = 5;
-}
 message SaveUserRequest{
     string first_name = 1;
     string last_name = 2;
@@ -39,5 +30,21 @@ message FindUserByEmailRequest{
 
 message FindUserResponse{
     Response response = 1;
-    User user = 2;
+    uint32 user_id = 2;
+    string first_name =3 ;
+    string last_name = 4;
+    string email  = 5;
+    string password = 6;
+}
+
+message GetUserProfileRequest {
+    uint32 user_id = 1;
+}
+
+message GetUserProfileResponse {
+    Response response = 1;
+    uint32 user_id = 2;
+    string first_name = 3;
+    string last_name = 4;
+    string email  = 5;
 }

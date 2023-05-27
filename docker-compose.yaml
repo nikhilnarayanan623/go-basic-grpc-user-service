@@ -1,0 +1,35 @@
+version: '3'
+services:
+  postgresdb:
+    image: postgres
+    ports: 
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=nikhil382
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=user_service_db
+    volumes:
+      - database:/var/lib/postgresql/data
+
+  user-service:
+    image: nikhil382/go-basic-grpc-user-service
+    environment:
+      - SERVICE_PORT=:50051
+      - DB_HOST=postgresdb
+      - DB_NAME=user_service_db
+      - DB_USER=nikhil382
+      - DB_PASSWORD=password
+      - DB_PORT=5432  
+    
+
+  pg-admin:
+    image:  dpage/pgadmin4
+    ports:
+      - 8080:80
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=nikhil@gmail.com
+      - PGADMIN_DEFAULT_PASSWORD=password
+
+volumes:
+  database:
+    driver: local

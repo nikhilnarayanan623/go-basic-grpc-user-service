@@ -39,13 +39,11 @@ func (c *serviceServer) FindUserByEmail(ctx context.Context, req *pb.FindUserByE
 			Message:    "successfully found user data details",
 			Error:      "",
 		},
-		User: &pb.User{
-			UserId:    user.ID,
-			FirstName: user.FirstName,
-			LastName:  user.LastName,
-			Email:     user.Email,
-			Password:  user.Password,
-		},
+		UserId:    user.ID,
+		FirstName: user.FirstName,
+		LastName:  user.LastName,
+		Email:     user.Email,
+		Password:  user.Password,
 	}, nil
 }
 
@@ -74,5 +72,31 @@ func (c *serviceServer) SaveUser(ctx context.Context, req *pb.SaveUserRequest) (
 			Error:      "",
 		},
 		UserId: userId,
+	}, nil
+}
+
+func (c *serviceServer) GetUserProfile(ctx context.Context, req *pb.GetUserProfileRequest) (*pb.GetUserProfileResponse, error) {
+
+	user, err := c.useCase.GetUserProfile(ctx, req.UserId)
+	if err != nil {
+		return &pb.GetUserProfileResponse{
+			Response: &pb.Response{
+				StatusCode: http.StatusInternalServerError,
+				Message:    "failed to get user details",
+				Error:      err.Error(),
+			},
+		}, nil
+	}
+
+	return &pb.GetUserProfileResponse{
+		Response: &pb.Response{
+			StatusCode: http.StatusOK,
+			Message:    "successfully go user details",
+			Error:      "",
+		},
+		UserId:    user.ID,
+		FirstName: user.FirstName,
+		LastName:  user.LastName,
+		Email:     user.Email,
 	}, nil
 }
